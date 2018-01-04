@@ -6,11 +6,6 @@ from sqlalchemy import ForeignKey
 from sqlalchemy.orm import relationship
 
 
-'''
-relationship( "CLASS NAME")
-
-back_pop, 上有Foreigner Key, 加 s
-'''
 
 def sdb_connect(basedir, name = 'data'):
     return create_engine('sqlite:///'+os.path.join(basedir, name + '.sqlite'))
