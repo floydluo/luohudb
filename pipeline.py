@@ -125,7 +125,7 @@ def WriteEPR(dt_dict, session, patt):
     
     EPR = dt_dict['Data']['EPRdata']
     if EPR == None:
-        print(dt_dict)
+        #print(dt_dict)
         return 
     
     if 'OpEMRData' in EPR:
@@ -139,12 +139,16 @@ def WriteEPR(dt_dict, session, patt):
 
         if 'Basicinfo' in RAN:
             Basicinfo = RAN.pop('Basicinfo')
-            if type(Basicinfo) == str:
-                Basicinfo = '<xml>'  + Basicinfo+ '</xml>'  
+            if type(Basicinfo) == str or type(Basicinfo) == unicode:
+                Basicinfo = u'<xml>'  + Basicinfo+ u'</xml>'  
                 result = xmltodict.parse(Basicinfo)
-                Basicinfo = result['xml']
-            newDict = dict(RAN, **Basicinfo)
-            RAN_info = RANinfo(**newDict)
+                Basicinfo = result[u'xml']
+            try:
+            	newDict = dict(RAN, **Basicinfo)
+            	RAN_info = RANinfo(**newDict)
+            except:
+            	print(Basicinfo)
+            	RAN_info = RANinfo(**RAN)
 
         else:
             RAN_info = RANinfo(**RAN)

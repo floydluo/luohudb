@@ -12,11 +12,9 @@ from pipeline import WritePatientData
 
 server = '0.0.0.0'
 user = 'SA'
-password = 'change-this-to-real-password'
+password = 'change-it-to-password'
 port = 1433
 dbname = 'medicine'
-
-conn = pymssql.connect(server, user, password, dbname, port = port)
 
 
 
@@ -45,6 +43,9 @@ if __name__=="__main__":
 
 	if opts.data_source == 'mssql':
 		print('Reading the Table from MS-sql-server! ')
+
+		conn = pymssql.connect(server, user, password, dbname, port = port)
+
 		df = pd.read_sql('select * from xml_table', conn)
 
 		if opts.pickle:
