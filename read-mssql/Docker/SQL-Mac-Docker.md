@@ -42,7 +42,7 @@ sudo docker exec -it mssql "bash"
 /opt/mssql-tools/bin/sqlcmd  -S localhost -U SA -P '<YourStrong!Passw0rd>'
 
 #### |---> in mssql
-ALTER LOGIN SA WITH PASSWORD="freud211@cct"
+ALTER LOGIN SA WITH PASSWORD="yournewpassword"
 
 ```
 
@@ -65,6 +65,7 @@ sqlcmd  -S 127.0.0.1,1401  -U SA
 ### 5. Copy the Backup File to Docker Image 
 
 ```Shell
+sudo docker mkdir mssql:/var/opt/mssql/backup
 sudo docker cp medicine.bak mssql:/var/opt/mssql/backup
 ```
 
@@ -82,6 +83,7 @@ sudo docker cp medicine.bak mssql:/var/opt/mssql/backup
 
 /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'freud211@cct' -Q 'restore filelistonly from disk = "/var/opt/mssql/backup/medicine.bak"' | tr -s ' ' | cut -d ' ' -f 1-2
 
+# will show file xml and xml_log
 
 # then enter the sql # change the password 
 /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P '<-password->' 
@@ -92,10 +94,10 @@ sudo docker cp medicine.bak mssql:/var/opt/mssql/backup
 ```sql
 
 -- inside the sql
-RESTORE DATABASE cctdb FROM DISK = "/var/opt/mssql/backup/medicine.bak"
 
-RESTORE DATABASE medicine FROM DISK = "/var/opt/mssql/backup/medicine.bak"
-WITH MOVE "xml" TO "/var/opt/mssql/data/xml",
+
+RESTORE DATABASE cctdb FROM DISK = "/var/opt/mssql/backup/medicine.bak"
+WITH MOVE "xml" TO "/var/opt/mssql/data/xml", MOVE "xml_log" TO "/var/opt/mssql/data/xml_log"
 
 go
 
@@ -150,7 +152,6 @@ sqlcmd -S 10.30.19.158,1401 -U sa
 ```
 
 
-
 ### 8. Read the Database by Python
 
 ```shell
@@ -159,5 +160,8 @@ conda create -n cctdb python=2 pymssql
 source activate cctdb
 pip install ipykernel
 python -m ipykernel install --user --name cctdb --display-name "CCTDB"
+
+pip install sqlalchemy
+pip install pymysql
 ```
 
