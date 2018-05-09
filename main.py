@@ -12,7 +12,7 @@ from pipeline import WritePatientData
 
 server = '0.0.0.0'
 user = 'SA'
-password = 'SRIBD@luohucct0'
+password = 'change-this-to-real-password'
 port = 1433
 dbname = 'medicine'
 
