@@ -79,22 +79,21 @@ sudo docker cp medicine.bak mssql:/var/opt/mssql/backup
 
 ```shell
 # enter the image mssql
-/opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P '<-password->' -Q 'restore filelistonly from disk = "/var/opt/mssql/backup/medicine.bak"' | tr -s ' ' | cut -d ' ' -f 1-2
+# remind change the password '<-password->' and bak file name <medicine.bak>
 
-/opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P 'freud211@cct' -Q 'restore filelistonly from disk = "/var/opt/mssql/backup/medicine.bak"' | tr -s ' ' | cut -d ' ' -f 1-2
+/opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P '<-password->' -Q 'restore filelistonly from disk = "/var/opt/mssql/backup/medicine.bak"' | tr -s ' ' | cut -d ' ' -f 1-2
 
 # will show file xml and xml_log
 
-# then enter the sql # change the password 
+# then enter the sql
 /opt/mssql-tools/bin/sqlcmd -S localhost -U SA -P '<-password->' 
 ```
 
-2. Restore the database file
 
 ```sql
 
 -- inside the sql
-
+-- 2. Restore the database file
 
 RESTORE DATABASE cctdb FROM DISK = "/var/opt/mssql/backup/medicine.bak"
 WITH MOVE "xml" TO "/var/opt/mssql/data/xml", MOVE "xml_log" TO "/var/opt/mssql/data/xml_log"
@@ -103,7 +102,7 @@ go
 
 ```
 
-3. Check the Results
+2. Check the Results
 
 ```sql
 -- check the result
